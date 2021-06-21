@@ -16,8 +16,6 @@ int randrange(int lo, int hi) {
 nat sbit(int x) { return nat(1) << x; }
 int bit_width(nat x) {
     return x ? 64 - __builtin_clzll(x) : 0; }
-int high_bit(nat x) {
-    return x ? bit_width(x-1) : 0; }
 int popcount(nat x) {
     return __builtin_popcountll(x); }
 

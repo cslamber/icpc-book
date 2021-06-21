@@ -46,7 +46,7 @@ template<class M> struct LazySegtree : public M {
     A aact(MF v) { return A(in_place_index<2>, v); }
 
     int h; vector<A> a; Segtree<M> s;
-    LazySegtree(int n) : s(n), h(high_bit(n)), a(n) {}
+    LazySegtree(int n) : s(n), h(bit_width(n)), a(n) {}
 
     void apply_(int i, A c, int l) {
         ordered_visit(c,
