@@ -18,7 +18,7 @@ decltype(auto) yc(Fun &&fun) {
 // table for large variants
 template<size_t I, class Variant, class Fun>
 void ordered_visit_(Variant&& v, Fun&& f) {
-    //static_assert(I+1 == variant_size_v<Variant>, "");
+    static_assert(I+1 == variant_size_v<remove_reference_t<Variant>>);
     f(get<I>(forward<Variant>(v))); }
 
 template<size_t I, class Variant, class Fun, class... Funs>
