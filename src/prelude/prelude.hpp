@@ -14,7 +14,9 @@ using nat = uint64_t;
 #define each(x,y) for (auto& x : y)
 
 #define all(x) (x).begin(), (x).end()
-template<class T>int sz(const T& c){return c.size();}
+#define rall(x) (x).rbegin(), (x).rend()
+
+template<class T>int sz(const T& c){ return c.size(); }
 
 void subcases(); bool CONTINUE = true;
 void solve();

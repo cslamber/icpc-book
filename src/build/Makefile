@@ -1,4 +1,4 @@
-BOOKPATH := ${BOOKPATH}
+BOOKPATH := $(BOOKPATH)/src
 
 .PHONY: setup run/% real/% copy/%
 .PRECIOUS: pre/% bin/% bin/local_%
@@ -6,8 +6,8 @@ BOOKPATH := ${BOOKPATH}
 setup:
 	mkdir -p pre bin
 
-pre/%: % $(BOOKPATH)
-	python3 $(BOOKPATH)/build/includer.py $(BOOKPATH) < $< > $@
+pre/%: % ${BOOKPATH}
+	python3 ${BOOKPATH}/build/includer.py ${BOOKPATH} < $< > $@
 
 bin/local_%: pre/%.cpp
 	g++ $< -O0 -g -fsanitize=address -DLOCAL -std=c++17 -o $@
@@ -24,7 +24,7 @@ copy/%: pre/%.cpp
 	cat $< | xsel -b -i
 
 %.cpp:
-	cp $(BOOKPATH)/header.cpp $@
+	cp ${BOOKPATH}/header.cpp $@
 
 run/%: bin/local_%
 	./$<
