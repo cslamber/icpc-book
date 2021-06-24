@@ -36,4 +36,6 @@ template<class M> struct Segtree : public M {
         left.insert(left.end(), rall(right));
         return left;
     }
+
+    void push_down(int i, int k) {}
 };

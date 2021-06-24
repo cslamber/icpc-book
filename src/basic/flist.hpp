@@ -12,6 +12,8 @@ struct flist : shared_ptr<flist_elem<T>> {
     flist(shared_ptr<flist_elem<T>> v) : shared_ptr<flist_elem<T>>(v) {}
     flist(T hd, flist tl) : shared_ptr<flist_elem<T>>(new flist_elem<T>(hd, tl)) {}
 
+    friend flist<T> operator|(T hd, flist<T> tl) { return flist(hd, tl); }
+
     vector<T> to_vector() const {
         vector<T> r;
         for (shared_ptr<flist_elem<T>> c = *this; c; c = c->tl)

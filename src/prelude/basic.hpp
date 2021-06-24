@@ -14,9 +14,13 @@ int randrange(int lo, int hi) {
 
 // bit stuff, some from c++20
 nat sbit(int x) { return nat(1) << x; }
+int bit_countl(nat x) {
+    return x ? __builtin_clzll(x) : 64; }
+int bit_countr(nat x) {
+    return x ? __builtin_ctzll(x) : 64; }
 int bit_width(nat x) {
-    return x ? 64 - __builtin_clzll(x) : 0; }
+    return 64 - bit_countl(x); }
 int popcount(nat x) {
     return __builtin_popcountll(x); }
 
-// INCLUDE prelude/functional.hpp
+/** INCLUDE prelude/functional.hpp */

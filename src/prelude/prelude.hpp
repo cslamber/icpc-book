@@ -31,6 +31,6 @@ int32_t main() {
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count()); 
 
-// INCLUDE prelude/debug.hpp
-// INCLUDE prelude/basic.hpp
+/** INCLUDE prelude/debug.hpp */
+/** INCLUDE prelude/basic.hpp */
 

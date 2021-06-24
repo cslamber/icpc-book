@@ -1,4 +1,4 @@
-// INCLUDE data-structure/segtree.hpp
+/** INCLUDE data-structure/segtree.hpp */
 
 template<class M> struct LazySegtree : public M {
     using MT = typename M::T;
@@ -25,14 +25,17 @@ template<class M> struct LazySegtree : public M {
         );
     }
 
+    void push_down(int j, int k) {
+        int j = i >> b;
+        if (j >= n || !a[j].index()) return;
+        apply_(j<<1|0, a[j], k>>1);
+        apply_(j<<1|1, a[j], k>>1);
+        a[j] = A();
+    }
+
     void push(int i) {
         i += s.n;
-        for (int b = h; b; b--) {
-            int j = i >> b;
-            apply_(j<<1|0, a[j], sbit(b-1));
-            apply_(j<<1|1, a[j], sbit(b-1));
-            a[j] = A();
-        }
+        for (int b = h; b; b--) push_down(i >> b, sbit(b));
     }
     
     void action(A v, int l, int r) {

@@ -7,7 +7,7 @@ setup:
 	mkdir -p pre bin
 
 pre/%: % ${BOOKPATH}
-	python3 ${BOOKPATH}/build/includer.py ${BOOKPATH} < $< > $@
+	python3 ${BOOKPATH}/build/preprocess.py ${BOOKPATH} < $< > $@
 
 bin/local_%: pre/%.cpp
 	g++ $< -O0 -g -fsanitize=address -DLOCAL -std=c++17 -o $@
