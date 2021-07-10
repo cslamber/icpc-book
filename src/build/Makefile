@@ -1,14 +1,10 @@
 BOOKPATH := $(BOOKPATH)/src
 
-.PHONY: setup hdr/% run/% real/% copy/%
+.PHONY: setup run/% real/% copy/%
 .PRECIOUS: pre/% bin/% bin/local_%
 
-# setup
 setup:
 	mkdir -p pre bin
-
-hdr/%.cpp:
-	cp ${BOOKPATH}/header.cpp $@
 
 # core
 pre/%: % ${BOOKPATH}
@@ -35,3 +31,7 @@ bin/%: pre/%.py
 	echo "#!/usr/bin/env python3" > $@
 	cat $< > $@
 	chmod +x $@
+
+# header, low prec
+%.cpp:
+	cp ${BOOKPATH}/header.cpp $@
