@@ -9,18 +9,18 @@ template<class M> struct LazySegtree : public Segtree<M> {
     LazySegtree(int n) : Segtree<M>(n), h(bit_width(n)), a(n) {}
 
     void apply_(int i, A c, int l) {
-        visit(overloaded {
+        match_with(c,
             [&](monostate) { },
             [&](MT t) { this->s[i] = M::mult(t.v, l); if (i < this->n) a[i] = c; },
             [&](MF f) {
                 this->s[i] = M::apply(this->s[i], f.v, l);
-                if (i < this->n) visit(overloaded {
+                if (i < this->n) match_with(a[i],
                     [&](monostate) { a[i] = c; },
                     [&](MT t) { a[i] = MT{M::apply(t.v, f.v, 1)}; },
                     [&](MF g) { a[i] = MF{M::compose(f.v, g.v)}; }
-                }, a[i]);
+                );
             }
-        }, c);
+        );
     }
 
     void push_down(int j, int k) {
