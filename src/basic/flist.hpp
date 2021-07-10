@@ -1,22 +1,16 @@
-template<class T>
-struct flist_elem {
-    shared_ptr<flist_elem> tl;
-    T hd;
+tcT struct flist {
+    struct elem { T hd; shared_ptr<elem> tl; };
+    using sp = shared_ptr<elem>;
 
-    flist_elem(T hd, shared_ptr<flist_elem> tl) : hd(hd), tl(tl) {}
-};
-
-template<class T>
-struct flist : shared_ptr<flist_elem<T>> {
+    sp v;
     flist() {}
-    flist(shared_ptr<flist_elem<T>> v) : shared_ptr<flist_elem<T>>(v) {}
-    flist(T hd, flist tl) : shared_ptr<flist_elem<T>>(new flist_elem<T>(hd, tl)) {}
+    flist(T hd, flist tl) : v(new elem{hd, tl.v}) {}
 
-    friend flist<T> operator|(T hd, flist<T> tl) { return flist(hd, tl); }
+    flist operator>>(T hd) const { return flist(hd, *this); }
 
-    vector<T> to_vector() const {
-        vector<T> r;
-        for (shared_ptr<flist_elem<T>> c = *this; c; c = c->tl)
+    vec<T> to_vec() const {
+        vec<T> r;
+        for (sp c = v; c; c = c->tl)
             r.push_back(c->hd);
         return r;
     }

@@ -3,8 +3,7 @@ template<class Seg> struct PerfectSegtree : Seg {
     PerfectSegtree(int n) : Seg(sbit(bit_width(n))) {}
 
     // return largest l such that cond(query(l,r))
-    template<class Cond>
-    int bsearch_left(int r, Cond cond) {
+    tcF int bsearch_left(int r, F cond) {
         T acc = Seg::e;
         return yc([&](auto rec, int i, int left, int right) -> int {
             if (r < left) return -1;
@@ -28,8 +27,7 @@ template<class Seg> struct PerfectSegtree : Seg {
     }
 
     // return smallest r such that cond(query(l,r))
-    template<class Cond>
-    int bsearch_right(int l, Cond cond) {
+    tcF int bsearch_right(int l, F cond) {
         T acc = Seg::e;
         return yc([&](auto rec, int i, int left, int right) -> int {
             if (right < l) return -1;

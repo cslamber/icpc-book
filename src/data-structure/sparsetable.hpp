@@ -1,9 +1,9 @@
 template<class M> struct SparseTable : public M {
-    // not standard, works with any semigroup rather than just bands
+    // useless, but works with any semigroup rather than just bands
     using T = typename M::T;
     vector<vector<T>> t;
 
-    SparseTable(vector<T> data) : t(bit_width(sz(data)), data) {
+    SparseTable(vec<T> data) : t(bit_width(sz(data)), data) {
         rep(layer,0,sz(t)) {
             int half = sbit(layer);
             for (int g = 0; g < sz(data); g += 2*half) {

@@ -8,11 +8,16 @@ def include(file):
     included.add(file)
     return open(os.path.join(bookpath, file)).read()
 
-def aggregate(desc):
-    return ""
+def python(code):
+    from io import StringIO
+    from contextlib import redirect_stdout
 
-fs = {"include": include, "aggregate": aggregate}
+    f = StringIO()
+    with redirect_stdout(f):
+        exec(code.strip())
+    return f.getvalue()
 
+fs = {"include": include, "python": python}
 
 data = open(0).read()
 while True:
@@ -21,4 +26,3 @@ while True:
     data = "\n".join([data[:res.start()], fs[res[1].lower()](res[2]), data[res.end():]])
 
 print(data)
-

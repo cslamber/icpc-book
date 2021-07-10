@@ -16,7 +16,10 @@ using nat = uint64_t;
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
 
-template<class T>int sz(const T& c){ return c.size(); }
+#define tcT template<class T>
+#define tcF template<class F>
+
+tcT int sz(const T& c){ return c.size(); }
 
 void subcases(); bool CONTINUE = true;
 void solve();
@@ -33,4 +36,3 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 /** INCLUDE prelude/debug.hpp */
 /** INCLUDE prelude/basic.hpp */
-

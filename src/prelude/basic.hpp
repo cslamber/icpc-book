@@ -4,7 +4,8 @@
 #define Tuple make_tuple
 #define Pair make_pair
 
-using vi = vector<int>;
+tcT using vec = vector<T>;
+using vi = vec<int>;
 
 int INF = numeric_limits<int>::max() / 4, ZERO = 0, ONE = 1;
 string nl = "\n";

@@ -1,7 +1,7 @@
 template<class M> struct Segtree : public M {
     using T = typename M::T;
 
-    int n; vector<T> s;
+    int n; vec<T> s;
     Segtree(int n) : n(n), s(2*n,M::e) {};
 
     void build(int i) {
@@ -29,7 +29,7 @@ template<class M> struct Segtree : public M {
     }
 
     vi intervals(int l, int r) {
-        vector<int> left, right;
+        vec<int> left, right;
         for_intervals(l, r,
             [&](int i, int k) { left.push_back(i); },
             [&](int i, int k) { right.push_back(i); });

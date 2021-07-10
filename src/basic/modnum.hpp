@@ -22,7 +22,7 @@ struct modnum {
 	bool operator!=(const modnum& a) { return a.v != v; }
 
 	modnum inv() const {
-		modnum res; res.v = minv(v, MOD); return res; }
+		modnum r; r.v = minv(v, MOD); return r; }
 
 	modnum operator+() const {
 		return modnum(*this); }

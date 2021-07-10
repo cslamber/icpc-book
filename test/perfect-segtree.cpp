@@ -23,4 +23,3 @@ void check_basic() {
 void subcases() {
     check_basic();
 }
-
