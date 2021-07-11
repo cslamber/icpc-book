@@ -17,6 +17,7 @@ using nat = uint64_t;
 #define rall(x) (x).rbegin(), (x).rend()
 
 #define tcT template<class T>
+#define tcI template<class Int>
 #define tcF template<class F>
 
 tcT int sz(const T& c){ return c.size(); }
@@ -34,5 +35,20 @@ int32_t main() {
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count()); 
 
-/** INCLUDE prelude/debug.hpp */
-/** INCLUDE prelude/basic.hpp */
+#define Pb push_back
+#define Eb emplace_back
+
+#define Tuple make_tuple
+#define Pair make_pair
+
+tcT using vec = vector<T>;
+using vi = vec<int>;
+#define vT vec<T>
+#define vI vec<Int>
+
+int INF = numeric_limits<int>::max() / 4, ZERO = 0, ONE = 1;
+string nl = "\n";
+
+
+/// INCLUDE prelude/debug.hpp
+/// INCLUDE prelude/basic.hpp

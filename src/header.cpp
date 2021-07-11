@@ -1,4 +1,4 @@
-/** INCLUDE prelude/prelude.hpp */
+/// INCLUDE prelude/prelude.hpp
 
 void subcases() {
     precompute();

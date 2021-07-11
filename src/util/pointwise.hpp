@@ -1,4 +1,6 @@
 template<class C, class E = C::value_type> struct pointwise : public C {
+    using C::C;
+
     #define make_op(op) \
     friend C& operator op= (C& x, const C& y) { \
         rep(i,0,sz(x)) x[i] op = y[i]; return x; } \

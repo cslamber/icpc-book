@@ -1,4 +1,4 @@
-/** INCLUDE data-structure/segtree.hpp */
+/// INCLUDE data-structure/segtree.hpp
 
 template<class M> struct LazySegtree : public Segtree<M> {
     struct MT { typename M::T v; };

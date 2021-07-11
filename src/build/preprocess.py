@@ -1,12 +1,13 @@
-import sys,os,re
-bookpath = sys.argv[1]
+import os,re,sys
+bookpath = os.environ['BOOKPATH']
+assert bookpath
 
 included = set()
 def include(file):
-    file = file.strip()
+    file = os.path.realpath(file)
     if file in included: return ""
     included.add(file)
-    return open(os.path.join(bookpath, file)).read()
+    return open(file).read()
 
 def python(code):
     from io import StringIO
@@ -17,11 +18,24 @@ def python(code):
         exec(code.strip())
     return f.getvalue()
 
-fs = {"include": include, "python": python}
+def named(data):
+    name,fields,typ=data.strip().split(':',2)
+    fields=fields.strip().split()
+    name=name.strip()
+    typ=typ.strip()
+    methods=" ".join(f"auto& {field}() {{ return get<{i}>(*this); }}" for i,field in enumerate(fields))
+    return f"struct {name} : public {typ} {{ using {typ}::{typ}; {methods} }};"
 
-data = open(0).read()
+fs = {
+    "include": (lambda f: include(os.path.join(bookpath, f))),
+    "python": python,
+    "named": named,
+    "linclude": (lambda f: include(os.path.join(os.path.dirname(sys.argv[1]), f)))
+    }
+
+data = open(sys.argv[1]).read()
 while True:
-    res = re.search(r"/\*\* (\S+)(.+?)\*/", data)
+    res = re.search(r"/\*\* (\S+) (.+?)\*/", data) or re.search(r"/// (\S+) (.+?)\n", data)
     if res is None: break
     data = "\n".join([data[:res.start()], fs[res[1].lower()](res[2]), data[res.end():]])
 
