@@ -3,13 +3,13 @@ namespace Debug {
 template<class A,class B>ostream& operator<<(ostream& os,const pair<A,B>& p);
 
 template<class C, class T = enable_if_t<!is_same<C,string>::value, typename C::value_type>>
-ostream& operator<<(ostream& os, const C& v){
+ostream& operator<<(ostream& os, const C& v) {
     os << '{'; string sep;
     for (const T& x: v) os<< sep << x, sep = ", ";
     return os << '}';
 }
 
-template<class A,class B>ostream& operator<<(ostream& os, const pair<A,B>& p){
+template<class A,class B>ostream& operator<<(ostream& os, const pair<A,B>& p) {
     return os << "{" << p.first << ", " << p.second << "}"; }
 
 template<class H> void Debug(const H& h) {
@@ -20,7 +20,9 @@ template<class H, class...T> void Debug(const H& h, const T&... t) {
 
 #ifdef LOCAL
 #define dbg(...) cerr << __LINE__ << ": " << "[" << #__VA_ARGS__ << "] = [", Debug::Debug(__VA_ARGS__)
+#define iflocal if (1)
 #else
 #define dbg(...) 0
+#define iflocal if (0)
 #endif
 }

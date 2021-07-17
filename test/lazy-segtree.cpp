@@ -1,7 +1,6 @@
-/** INCLUDE prelude/prelude.hpp */
+/// INCLUDE prelude/prelude.hpp
 
-/** INCLUDE data-structure/segtree.hpp */
-/** INCLUDE data-structure/lazy-segtree.hpp */
+/// INCLUDE data-structure/lazy-segtree.hpp
 
 void precompute() {}
 

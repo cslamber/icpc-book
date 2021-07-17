@@ -8,10 +8,12 @@ using namespace std;
 
 #define int int64_t
 using nat = uint64_t;
+using real = double;
 
 #define rep(i,a,b) for (int i = (a); i < (b); i++)
 #define repr(i,a,b) for (int i = (b)-1; i >= (a); i--)
-#define each(x,y) for (auto& x : y)
+#define repi(i,a,b) for (int i = (a); i <= (b); i++)
+#define each(x,y) for (auto& x : (y))
 
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
@@ -41,10 +43,6 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 #define Tuple make_tuple
 #define Pair make_pair
 
-tcT using vec = vector<T>;
-using vi = vec<int>;
-#define vT vec<T>
-#define vI vec<Int>
 
 int INF = numeric_limits<int>::max() / 4, ZERO = 0, ONE = 1;
 string nl = "\n";
@@ -52,3 +50,5 @@ string nl = "\n";
 
 /// INCLUDE prelude/debug.hpp
 /// INCLUDE prelude/basic.hpp
+
+/// INCLUDE util/functional.hpp

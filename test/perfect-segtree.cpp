@@ -1,7 +1,7 @@
-/** INCLUDE prelude/prelude.hpp */
+/// INCLUDE prelude/prelude.hpp
 
-/** INCLUDE data-structure/segtree.hpp */
-/** INCLUDE data-structure/perfect-segtree.hpp */
+/// INCLUDE data-structure/segtree.hpp
+/// INCLUDE data-structure/perfect-segtree.hpp
 
 struct AddInt {
     using T = int;
