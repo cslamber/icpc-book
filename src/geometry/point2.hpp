@@ -1,7 +1,6 @@
 tcT struct Point2 {
     using P = Point2;
     T x, y;
-    static const P O = {0, 0};
 
     tuple<T&,T&> tup() const { return tie(x,y); }
 
@@ -9,7 +8,7 @@ tcT struct Point2 {
     bool operator==(P a) const { return tup() == a.tup(); }
 
     P operator+(P a) const { return {x+a.x, y+a.y}; }
-    P operator-(P a) const { return {x+a.x, y+a.y}; }
+    P operator-(P a) const { return {x-a.x, y-a.y}; }
     P operator*(T a) const { return {x*a, y*a}; }
     P operator/(T a) const { return {x/a, y/a}; }
 
@@ -27,6 +26,6 @@ tcT struct Point2 {
     T dist2() const { return dot(*this); }
     P perp() const { return {-y, x}; }
 
-    db angle() const { return atan2(y, x); }
-    db dist() const { return sqrt(db(dist2())); }
+    real angle() const { return atan2(y, x); }
+    real dist() const { return sqrt(db(dist2())); }
 };

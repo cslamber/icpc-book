@@ -8,7 +8,7 @@ using namespace std;
 
 #define int int64_t
 using nat = uint64_t;
-using real = double;
+#define real double
 
 #define rep(i,a,b) for (int i = (a); i < (b); i++)
 #define repr(i,a,b) for (int i = (b)-1; i >= (a); i--)
