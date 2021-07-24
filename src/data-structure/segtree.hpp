@@ -4,6 +4,12 @@ template<class M> struct Segtree : public M {
     int n; vec<T> s;
     Segtree(int n) : n(n), s(2*n,M::e) {};
 
+    Segtree(const vector<T>& x) : n(sz(x)), s(2*n,M::e) {
+        rep(i,0,n) s[i+n] = x[i];
+
+        repr(i,0,n) s[i] = M::op(s[2*i],s[2*i+1]);
+    };
+
     void build(int i) {
         for (i += n; i >>= 1;) s[i] = M::op(s[2*i],s[2*i+1]); }
 
@@ -19,6 +25,9 @@ template<class M> struct Segtree : public M {
             if (r & 1) right(--r, k);
         }
     }
+
+    tcF void for_intervals(int l, int r, F f) {
+        for_intervals(l, r, f, f); }
 
     T get(int l, int r) {
         T la = M::e, ra = M::e;
