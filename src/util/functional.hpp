@@ -58,8 +58,8 @@ tcF int bsearch(int lo, int hi, F cond) {
     return hi;
 }
 
-tcT void setmax(T& dest, T&& src) {
+tcT void setmax(T& dest, T src) {
     if (dest < src) dest = src; }
 
-tcT void setmin(T& dest, T&& src) {
+tcT void setmin(T& dest, T src) {
     if (src < dest) dest = src; }
