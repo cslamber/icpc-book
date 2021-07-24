@@ -45,7 +45,13 @@ real: .bin/opt
 
 endif
 
-test: tests/* .bin/debug
+tests/%/in.txt: tests/%/gen.py
+	python3 $< > $@
+
+tests/%/out.txt:
+	touch $@
+
+test: tests/*/in.txt .bin/debug
 	@for dir in tests/*; do \
 		echo "$$dir:" ; \
 		diff -w "$$dir/out.txt" <(./.bin/debug < "$$dir/in.txt") --color ; \

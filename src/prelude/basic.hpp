@@ -7,8 +7,8 @@ Int Pow(Int base, nat exp, Int one = 1, Op op = Op()) {
     return one;
 }
 
-int randrange(int lo, int hi) {
-    return uniform_int_distribution<int>(lo, hi-1)(rng); }
+int randint(int lo, int hi) {
+    return uniform_int_distribution<int>(lo, hi)(rng); }
 
 // bit stuff, some from c++20
 nat sbit(int x) { return nat(1) << x; }

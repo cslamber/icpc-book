@@ -1,25 +1,25 @@
-template<class M> struct Segtree : public M {
-    using T = typename M::T;
+template<class T_> struct Segtree {
+    using T = T_;
+    int n; vT s;
 
-    int n; vec<T> s;
-    Segtree(int n) : n(n), s(2*n,M::e) {};
-
-    Segtree(const vector<T>& x) : n(sz(x)), s(2*n,M::e) {
+    Segtree(const vT& x) : n(sz(x)), s(2*n) {
         rep(i,0,n) s[i+n] = x[i];
 
-        repr(i,0,n) s[i] = M::op(s[2*i],s[2*i+1]);
+        repr(i,0,n) s[i] = s[2*i] + s[2*i+1];
     };
+    Segtree(int n) : Segtree(vT(n)) {};
 
     void build(int i) {
-        for (i += n; i >>= 1;) s[i] = M::op(s[2*i],s[2*i+1]); }
+        for (i += n; i >>= 1;) s[i] = s[2*i] + s[2*i+1]; }
 
-    void set(int i, T val) {
-        s[i+n] = val; build(i); }
+    void set(int i, T val) { s[i+n] = val; build(i); }
+
+    T operator[](int i) const { return s[i+n]; }
 
     // outside in
     template<class Left, class Right>
     void for_intervals(int l, int r, Left left, Right right) {
-        int k = 1;
+        int k = 1; r++;
         for (l += n, r += n; l < r; l >>= 1, r >>= 1, k <<= 1) {
             if (l & 1) left(l++, k);
             if (r & 1) right(--r, k);
@@ -29,16 +29,17 @@ template<class M> struct Segtree : public M {
     tcF void for_intervals(int l, int r, F f) {
         for_intervals(l, r, f, f); }
 
-    T get(int l, int r) {
-        T la = M::e, ra = M::e;
+    template<class S = T>
+    S get(int l, int r) {
+        S la, ra;
         for_intervals(l, r,
-            [&](int i, int k) { la = M::op(la, s[i]); },
-            [&](int i, int k) { ra = M::op(s[i], ra); });
-        return M::op(la, ra);
+            [&](int i, int k) { la = la + S(s[i]); },
+            [&](int i, int k) { ra = S(s[i]) + ra; });
+        return la + ra;
     }
 
     vi intervals(int l, int r) {
-        vec<int> left, right;
+        vi left, right;
         for_intervals(l, r,
             [&](int i, int k) { left.push_back(i); },
             [&](int i, int k) { right.push_back(i); });

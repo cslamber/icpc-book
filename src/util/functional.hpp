@@ -1,3 +1,4 @@
+/*
 #define vT vec<T>
 
 tcT struct vec : public vector<T> {
@@ -34,7 +35,10 @@ tcT struct vec : public vector<T> {
         return r;
     }
 };
+*/
 
+tcT using vec = vector<T>;
+#define vT vec<T>
 using vi = vec<int>;
 #define vI vec<Int>
 
