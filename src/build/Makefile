@@ -14,6 +14,7 @@ main.py:
 ifdef do_python
 
 .bin/debug: main.py
+	@mkdir -p .bin
 	echo "#!/usr/bin/env python3" > $@
 	cat $< >> $@
 	chmod +x $@

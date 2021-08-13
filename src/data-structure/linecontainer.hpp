@@ -6,7 +6,7 @@ struct Line {
 	bool operator<(int x) const { return p < x; }
 };
 
-struct LineContainer : multiset<Line, less<>> {
+struct t : multiset<Line, less<>> {
 	using T = int;
 	// (for doubles, use INF = 1/.0, div(a,b) = a/b)
 	T div(T a, T b) { // floored division

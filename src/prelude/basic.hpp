@@ -36,6 +36,8 @@ tcF struct y_combinator_result {
 tcF decltype(auto) yc(F &&f) {
     return y_combinator_result<decay_t<F>>(forward<F>(f)); }
 
+tcT T identity(T&& x) { return forward<T>(x); }
+
 // https://en.cppreference.com/w/cpp/utility/variant/visit
 template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;

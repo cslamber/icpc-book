@@ -1,17 +1,20 @@
 template<class Seg> struct PerfectSegtree : Seg {
     using T = typename Seg::T;
-    PerfectSegtree(vT v) : Seg((v.resize(sbit(bit_width(sz(v)))), v)) {}
-    PerfectSegtree(int n) : Seg(vT(n)) {}
+
+    template<class...Args> PerfectSegtree(vT v, Args...args) :
+        Seg((v.resize(sbit(bit_width(sz(v)))), v), args...) {}
+    template<class...Args> PerfectSegtree(int n) :
+        Seg(vT(n), args...) {}
 
     // return largest l such that cond(query(l,r))
-    template<class Cond, class S = T>
-    int bsearch_left(int r, Cond cond) {
-        S acc;
+    template<class Lift, class H, class Cond>
+    int bsearch_left(int r, Lift lift, H h, Cond cond) {
+        typename H::T acc = h.e;
         return yc([&](auto rec, int i, int left, int right) -> int {
             if (left > r) return -1;
 
             if (right <= r) {
-                S pot = S(this->s[i]) + acc;
+                typename H::T pot = h.op(lift(this->s[i]), acc);
 
                 if (left == right) return cond(pot) ? left : -1;
 
@@ -30,15 +33,20 @@ template<class Seg> struct PerfectSegtree : Seg {
         })(1, 0, this->n - 1);
     }
 
+    template<class Cond>
+    int bsearch_left(int r, Cond cond) {
+        return bsearch_left(r, identity, this->m, cond);
+    }
+
     // return smallest r >= l such that cond(query(l,r))
-    template<class S = T, class Cond>
-    int bsearch_right(int l, Cond cond) {
-        S acc;
+    template<class Lift, class H, class Cond>
+    int bsearch_right(int l, Lift Lift, H h, Cond cond) {
+        typename H::T acc = h.e;
         return yc([&](auto rec, int i, int left, int right) -> int {
             if (right < l) return -1;
 
             if (left >= l) {
-                S pot = acc + S(this->s[i]);
+                typename H::T pot = h.op(acc, lift(this->s[i]));
 
                 if (left == right) return cond(pot) ? right : -1;
 
@@ -55,5 +63,10 @@ template<class Seg> struct PerfectSegtree : Seg {
             if (x >= 0) return x;
             return rec(i<<1|1, mid+1, right);
         })(1, 0, this->n - 1);
+    }
+
+    template<class Cond>
+    int bsearch_right(int r, Cond cond) {
+        return bsearch_right(r, identity, this->m, cond);
     }
 };

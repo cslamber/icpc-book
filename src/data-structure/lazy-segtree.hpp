@@ -1,24 +1,25 @@
 /// INCLUDE data-structure/segtree.hpp
 
-template<class T, class F> struct LazySegtree : public Segtree<T> {
+template<class M, class Act> struct LazySegtree : public Segtree<M> {
+    using T = typename M::T;
     struct MT { T v; };
-    struct MF { F v; };
+    struct MF { typename Act::F v; };
     using A = variant<monostate, MT, MF>;
 
-    int h; vec<A> a;
-    LazySegtree(const vT& v) : Segtree<T>(v), h(bit_width(this->n)), a(this->n) {}
-    LazySegtree(int n) : LazySegtree(vT(n)) {}
+    int h; vec<A> a; Act act;
+    LazySegtree(const vT& v, M m, Act act) : act(act), Segtree<M>(v, m), h(bit_width(this->n)), a(this->n) {}
+    LazySegtree(int n, M m, Act act) : LazySegtree(vT(n, m.e), m, act) {}
 
     void apply_(int i, A c, int l) {
         match_with(c,
             [&](monostate) { },
-            [&](MT t) { this->s[i] = t.v * l; if (i < this->n) a[i] = c; },
+            [&](MT t) { this->s[i] = act.mult(t.v, l); if (i < this->n) a[i] = c; },
             [&](MF f) {
-                this->s[i] = f.v(this->s[i], l);
+                this->s[i] = act.act(f.v, this->s[i], l);
                 if (i < this->n) match_with(a[i],
                     [&](monostate) { a[i] = c; },
-                    [&](MT t) { a[i] = MT{f.v(t.v, 1)}; },
-                    [&](MF g) { a[i] = MF{f.v * g.v}; }
+                    [&](MT t) { a[i] = MT{ act.act(f.v, t.v, 1)}; },
+                    [&](MF g) { a[i] = MF{ act.mult(f.v, g.v) }; }
                 );
             }
         );
@@ -47,12 +48,16 @@ template<class T, class F> struct LazySegtree : public Segtree<T> {
         this->build(l); this->build(r);
     }
 
-    template<class S = T> S get(int l, int r) {
-        push(l); push(r); return Segtree<T>::template get<S>(l, r); }
+    template<class F, class H>
+    T get(int l, int r, F f, H h) {
+        push(l); push(r); return Segtree<M>::get(l, r, f, h); }
+
+    T get(int l, int r) {
+        push(l); push(r); return Segtree<M>::get(l, r); }
 
     void set(int l, int r, T v) {
         action(l, r, MT{v}); }
 
-    void apply(int l, int r, F f) {
+    void apply(int l, int r, typename Act::F f) {
         action(l, r, MF{f}); }
 };
