@@ -26,6 +26,6 @@ tcT struct Point2 {
     T dist2() const { return dot(*this); }
     P perp() const { return {-y, x}; }
 
-    real angle() const { return atan2(y, x); }
-    real dist() const { return sqrt(db(dist2())); }
+    db angle() const { return atan2(y, x); }
+    db dist() const { return sqrt(db(dist2())); }
 };

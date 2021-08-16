@@ -30,7 +30,9 @@ void solve();
 void precompute();
 
 int32_t main() {
+#ifndef MIXABLE_IO
     ios_base::sync_with_stdio(false);
+#endif
     cin.tie(nullptr);
     cout << setprecision(17);
     subcases();
@@ -44,10 +46,8 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 #define Tuple make_tuple
 #define Pair make_pair
 
-
 int INF = numeric_limits<int>::max() / 4, ZERO = 0, ONE = 1;
 string nl = "\n";
-
 
 /// INCLUDE prelude/debug.hpp
 /// INCLUDE prelude/basic.hpp
