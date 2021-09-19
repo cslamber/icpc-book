@@ -39,7 +39,7 @@ copy: pre.cpp
 
 .bin/opt: pre.cpp
 	@mkdir -p .bin
-	g++ $< -O2 -g -static -std=gnu++17 -o $@
+	g++ $< -O3 -std=gnu++17 -o $@
 
 real: .bin/opt
 	time ./$<

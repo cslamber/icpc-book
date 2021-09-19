@@ -1,40 +1,47 @@
+#ifdef LOCAL
 namespace Debug {
 
-template<class A,class B>ostream&operator<<(ostream&os,const pair<A,B>&p);
-template<class...Ts>ostream&operator<<(ostream&os,const tuple<Ts...>&t);
+bool _DEBUG = true;
 
-template<class C, class T = enable_if_t<!is_same<C,string>::value, typename C::value_type>>
-ostream& operator<<(ostream& os, const C& v) {
-    os << '{'; string sep;
-    for (const T& x: v) os << sep << x, sep = ", ";
-    return os << '}';
-}
+template<int N> struct priority_tag : priority_tag<N-1> {};
+template<> struct priority_tag<0> {};
 
-template<class Tuple, size_t...I>
-ostream& print_tuple(ostream& os, const Tuple& t, index_sequence<I...>) {
-    os << '{'; string sep;
-    (..., (os << sep << get<I>(t), sep = ", "));
-    return os << '}';
-}
+struct printer {
+    ostream&os;printer(ostream&os):os(os){}
+    tcT printer&operator,(const T&t){p(t);return*this;}
+    tcT void p(const T&t){p(t,priority_tag<3>());}
+    template<class T,class=decltype(os<<declval<T>())>
+    void p(const T&t,priority_tag<3>){os<<t;}
+    tcT void p(const T&t,priority_tag<0>){
+        os<<"[#"<<typeid(T).name()<<"#]";}
+    template<class T,class C=typename T::value_type>
+    void p(const T&t,priority_tag<2>){
+        os<<'{';string sep;
+        for(const C&e:t)os<<sep,p(e),sep=", ";
+        os<<'}';}
+    template<class T,class=decltype(get<0>(declval<T>()))>
+    void p(const T&t,priority_tag<1>){
+        print_tuple(t,make_index_sequence<tuple_size_v<T>>());}
 
-template<class... Ts>
-ostream& operator<<(ostream& os, const tuple<Ts...>& t) {
-    return print_tuple(os, t, index_sequence_for<Ts...>()); }
+    template<class Tuple, size_t...I>
+    void print_tuple(const Tuple& t, index_sequence<I...>) {
+        os<<'{';string sep;
+        (...,(os << sep,p(get<I>(t)),sep=", "));
+        os<<'}';
+    }
+};
 
-template<class A,class B>ostream& operator<<(ostream& os, const pair<A,B>& p) {
-    return os << "{" << p.first << ", " << p.second << "}"; }
-
-template<class H> void Debug(const H& h) {
-    cerr << h << "]" << endl; }
-
-template<class H, class...T> void Debug(const H& h, const T&... t) {
-    cerr << h << ", "; Debug(t...); }
-
-#ifdef LOCAL
-#define dbg(...) cerr << __LINE__ << ": " << "[" << #__VA_ARGS__ << "] = [", Debug::Debug(__VA_ARGS__)
+#define dbg(...) \
+    do if (Debug::_DEBUG) { \
+        std::cerr << __LINE__ << ": " \
+             << "[" << #__VA_ARGS__ \
+             << "] = ["; \
+        Debug::printer(std::cerr),__VA_ARGS__; \
+        std::cerr << "]" << std::endl; \
+    } while (0)
 #define iflocal if (1)
+}
 #else
-#define dbg(...) 0
+#define dbg(...)
 #define iflocal if (0)
 #endif
-}

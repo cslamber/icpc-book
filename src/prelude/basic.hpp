@@ -1,5 +1,5 @@
-template<class Int, class Op = multiplies<Int>>
-Int Pow(Int base, nat exp, Int one = 1, Op op = Op()) {
+template<class T, class Op = multiplies<T>>
+T Pow(T base, nat exp, T one = 1, Op op = Op()) {
     for (; exp; exp >>= 1) {
         if (exp&1) one = op(one, base);
         base = op(base, base);
@@ -7,21 +7,13 @@ Int Pow(Int base, nat exp, Int one = 1, Op op = Op()) {
     return one;
 }
 
-int randint(int lo, int hi) {
-    return uniform_int_distribution<int>(lo, hi)(rng); }
+int randint(int lo, int hi) { return uniform_int_distribution<int>(lo, hi)(rng); }
 
-// bit stuff, some from c++20
 nat sbit(int x) { return nat(1) << x; }
-int bit_countl(nat x) {
-    return x ? __builtin_clzll(x) : 64; }
-int bit_countr(nat x) {
-    return x ? __builtin_ctzll(x) : 64; }
-int bit_width(nat x) {
-    return 64 - bit_countl(x); }
-int popcount(nat x) {
-    return __builtin_popcountll(x); }
-
-// functional stuff
+int bit_countl(nat x) { return x ? __builtin_clzll(x) : 64; }
+int bit_countr(nat x) { return x ? __builtin_ctzll(x) : 64; }
+int bit_width(nat x) { return 64 - bit_countl(x); }
+int popcount(nat x) { return __builtin_popcountll(x); }
 
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
 tcF struct y_combinator_result {

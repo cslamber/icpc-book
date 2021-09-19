@@ -20,7 +20,6 @@ using ldb = long double;
 #define rall(x) (x).rbegin(), (x).rend()
 
 #define tcT template<class T>
-#define tcI template<class Int>
 #define tcF template<class F>
 
 tcT int sz(const T& c){ return c.size(); }
@@ -30,9 +29,7 @@ void solve();
 void precompute();
 
 int32_t main() {
-#ifndef MIXABLE_IO
     ios_base::sync_with_stdio(false);
-#endif
     cin.tie(nullptr);
     cout << setprecision(17);
     subcases();

@@ -18,18 +18,9 @@ def python(code):
         exec(code.strip())
     return f.getvalue()
 
-def named(data):
-    name,fields,typ=data.strip().split(':',2)
-    fields=fields.strip().split()
-    name=name.strip()
-    typ=typ.strip()
-    methods=" ".join(f"auto& {field}() {{ return get<{i}>(*this); }}" for i,field in enumerate(fields))
-    return f"struct {name} : public {typ} {{ using {typ}::{typ}; {methods} }};"
-
 fs = {
     "include": (lambda f: include(os.path.join(bookpath, f))),
     "python": python,
-    "named": named,
     "linclude": (lambda f: include(os.path.join(os.path.dirname(sys.argv[1]), f)))
     }
 

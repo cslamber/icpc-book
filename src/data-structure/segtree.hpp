@@ -1,6 +1,6 @@
 /// INCLUDE data-structure/augment.hpp
 
-template<class M, bool perfect = false> struct Segtree {
+template<class M> struct Segtree {
     using T = typename M::T;
     int n; vT s;
 
