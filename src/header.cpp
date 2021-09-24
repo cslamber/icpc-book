@@ -1,17 +1,28 @@
 /// INCLUDE prelude/prelude.hpp
 
-void subcases() {
+void cases() {
     precompute();
     int T = 1;
     cin >> T;
-    for (int i = 0; i < T; i++) {
-        solve();
+    for (int i = 1; i <= T; i++) {
+        this->run();
     }
 }
 
-void precompute() {
+void precompute() { }
+
+void read() {
+
 }
 
 void solve() {
+
+}
+
+void output() {
+
+}
+
+bool check() {
 
 }

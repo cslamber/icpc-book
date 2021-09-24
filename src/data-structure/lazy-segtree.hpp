@@ -6,7 +6,7 @@ template<class M, class Act> struct LazySegtree : public Segtree<M> {
     struct MF { typename Act::F v; };
     using A = variant<monostate, MT, MF>;
 
-    int h; vec<A> a; Act act;
+    int h; v<A> a; Act act;
     LazySegtree(const vT& v, M m, Act act) : act(act), Segtree<M>(v, m), h(bit_width(this->n)), a(this->n) {}
     LazySegtree(int n, M m, Act act) : LazySegtree(vT(n, m.e), m, act) {}
 
@@ -34,10 +34,10 @@ template<class M, class Act> struct LazySegtree : public Segtree<M> {
 
     void push(int i) {
         i += this->n; for (int b = h; b; b--) push_down(i >> b, sbit(b)); }
-    
+
     T operator[](int i) {
         push(i); return this->s[i+this->n]; }
-    
+
     void action(int l, int r, A v) {
         if (l > r) return;
         push(l); push(r);

@@ -1,11 +1,8 @@
 #ifdef LOCAL
-namespace Debug {
-
-bool _DEBUG = true;
-
-template<int N> struct priority_tag : priority_tag<N-1> {};
-template<> struct priority_tag<0> {};
-
+namespace Debug{
+bool _DEBUG=1;
+template<int N> struct priority_tag : priority_tag<N-1>{};
+template<> struct priority_tag<0>{};
 struct printer {
     ostream&os;printer(ostream&os):os(os){}
     tcT printer&operator,(const T&t){p(t);return*this;}

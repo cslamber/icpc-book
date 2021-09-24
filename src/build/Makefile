@@ -1,9 +1,7 @@
 BOOKPATH := $(BOOKPATH)
+BOOKFILES := $(shell find ${BOOTPATH} -type f)
 
-.PHONY: run real copy test
-.PRECIOUS: pre.cpp .bin/opt .bin/debug
-
-do_python := $(shell test -f main.py && echo -n 'yes')
+.PRECIOUS: .bin/opt .bin/debug
 
 main.cpp:
 	cp ${BOOKPATH}/header.cpp $@
@@ -11,40 +9,58 @@ main.cpp:
 main.py:
 	touch $@
 
-ifdef do_python
+.bin:
+	@mkdir $@
 
-.bin/debug: main.py
+use_python := $(shell test -f main.py && echo -n 'yes')
+
+ifdef use_python
+
+PRE := main.py
+
+.bin/debug: main.py .bin
 	@mkdir -p .bin
 	echo "#!/usr/bin/env python3" > $@
 	cat $< >> $@
 	chmod +x $@
 
-copy: main.py
-	cat $< | xsel -b -i
+.bin/opt: .bin/debug .bin
+	cp $< $@
 
 else
 
-pre.cpp: main.cpp ${BOOKPATH}
+PRE := pre.cpp
+
+.PRECIOUS: pre.cpp
+pre.cpp: main.cpp ${BOOKFILES}
 	python3 ${BOOKPATH}/build/preprocess.py $< > $@
 
-.bin/debug: pre.cpp
-	@mkdir -p .bin
+.bin/debug: pre.cpp .bin
 	g++ $< -O0 -g -fsanitize=address -DLOCAL -std=gnu++17 -o $@
 
-run: .bin/debug
+.bin/fuzz: pre.cpp .bin
+	g++ $< -O2 -g -fsanitize=address -DLOCAL -DLOCAL_FUZZ -std=gnu++17 -o $@
+
+.PHONY: fuzz
+fuzz: .bin/fuzz
 	./$<
 
-copy: pre.cpp
-	cat $< | xsel -b -i
-
-.bin/opt: pre.cpp
-	@mkdir -p .bin
+.bin/opt: pre.cpp .bin
 	g++ $< -O3 -std=gnu++17 -o $@
 
-real: .bin/opt
-	time ./$<
-
 endif
+
+.PHONY: run_debug
+run_debug: .bin/debug
+	./$<
+
+.PHONY: copy
+copy: ${PRE}
+	cat $< | xsel -b -i
+
+.PHONY: run_real
+run_real: .bin/opt
+	time ./$<
 
 tests/%/in.txt: tests/%/gen.py
 	python3 $< > $@
@@ -52,6 +68,7 @@ tests/%/in.txt: tests/%/gen.py
 tests/%/out.txt:
 	touch $@
 
+.PHONY: test
 test: tests/*/in.txt .bin/debug
 	@for dir in tests/*; do \
 		echo "$$dir:" ; \

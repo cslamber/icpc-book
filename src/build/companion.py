@@ -20,7 +20,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
         base = archive_dir / group / name
         tests = base / 'tests'
         Path.mkdir(tests, parents=True, exist_ok=False)
-        os.symlink(book_dir / 'build' / 'Makefile', base / 'Makefile')
         for i,sample in enumerate(data.get('tests', [])):
             try:
                 cur = tests / f"sample-{i+1}"
@@ -35,5 +34,5 @@ class Handler(http.server.BaseHTTPRequestHandler):
         os.system('make >/dev/null')
         print(base)
 
-        
+
 http.server.HTTPServer(address, Handler).serve_forever()
