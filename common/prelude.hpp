@@ -46,29 +46,27 @@ namespace debug {
 tcT using is_iterator = decltype(declval<T>().begin());
 tcT using is_printable = decltype(cerr << declval<T>());
 
-struct debugger {
-	tcT debugger& operator,(const T& t) {
-		if constexpr (experimental::is_detected_v<is_printable, T>) cerr << t;
-		else if constexpr (experimental::is_detected_v<is_iterator, T>) {
+tcT void print(const T& t) {
+	if constexpr (experimental::is_detected_v<is_printable, T>) cerr << t;
+	else if constexpr (experimental::is_detected_v<is_iterator, T>) {
+		string sep; cerr << "{";
+		for (const auto& v : t) cerr << sep, sep = ", ", print(v);
+		cerr << "}";
+	} else if constexpr (experimental::is_detected_v<tuple_size, T>) {
+		apply([&](const auto&... ts) {
 			string sep; cerr << "{";
-			for (const auto& v : t) cerr << sep, sep = ", ", *this,v;
+			((cerr << sep, sep = ", ", print(ts)), ...);
 			cerr << "}";
-		} else if constexpr (experimental::is_detected_v<tuple_size, T>) {
-			apply([&](const auto&... ts) {
-				string sep; cerr << "{";
-				(((void)(cerr << sep, sep = ", ", *this,ts)), ...);
-				cerr << "}";
-			}, t);
-		} else cerr << "[??]";
-		cerr << " ";
-		return *this;
-	}
-};
+		}, t);
+	} else cerr << "[??]";
+	cerr << " ";
+	return *this;
+}
 
 #define dbg(...) do { \
-	cerr << __LINE__ << ": [" << #__VA_ARGS << "] = ["; \
-	debug::debugger(),__VA_ARGS__; \
-	cerr << "]" << endl; \
+	cerr << __LINE__ << ": [" << #__VA_ARGS << "] = "; \
+	debug::print(make_tuple(__VA_ARGS__)); \
+	cerr << endl; \
 	} while (0)
 }
 #endif
@@ -86,16 +84,16 @@ int popcount(nat x) { return __builtin_popcountll(x); }
 
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
 tcF struct y_combinator_result {
-    F f;
-    tcT explicit y_combinator_result(T &&f): f(forward<T>(f)) {}
+	F f;
+	tcT explicit y_combinator_result(T &&f): f(forward<T>(f)) {}
 
-    template<class ...Args>
-    decltype(auto) operator()(Args &&...args) {
-        return f(ref(*this), forward<Args>(args)...); }
+	template<class ...Args>
+	decltype(auto) operator()(Args &&...args) {
+		return f(ref(*this), forward<Args>(args)...); }
 };
 
 tcF decltype(auto) yc(F &&f) {
-    return y_combinator_result<decay_t<F>>(forward<F>(f)); }
+	return y_combinator_result<decay_t<F>>(forward<F>(f)); }
 
 tcT T identity(T&& x) { return forward<T>(x); }
 
@@ -104,12 +102,12 @@ template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 template<class T, class... Ts> void match_with(T&& t, Ts &&...fs) {
-    visit(overloaded{forward<Ts>(fs)...}, forward<T>(t)); }
+	visit(overloaded{forward<Ts>(fs)...}, forward<T>(t)); }
 
 // generic stuff
 tcT pll bsearch(ll lo, ll hi, T f) {
-	while (hi-lo>1) {
-		ll m = lo+hi>>1;
+	while (hi - lo > 1) {
+		ll m = lo + hi >> 1;
 		(f(m) ? hi : lo) = m;
 	}
 	return {lo, hi};
@@ -117,9 +115,9 @@ tcT pll bsearch(ll lo, ll hi, T f) {
 
 template<class T, class Op = multiplies<T>>
 T Pow(T base, nat exp, T one = 1, Op op = Op()) {
-    for (; exp; exp >>= 1) {
-        if (exp&1) one = op(one, base);
-        base = op(base, base);
-    }
-    return one;
+	for (; exp; exp >>= 1) {
+		if (exp & 1) one = op(one, base);
+		base = op(base, base);
+	}
+	return one;
 }

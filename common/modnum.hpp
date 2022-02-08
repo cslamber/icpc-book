@@ -1,13 +1,14 @@
-template <uint32_t MOD> struct modnum {
+template <uint32_t MOD_> struct modnum {
 	using T = modnum;
 	using u64 = uint64_t;
 	using u32 = uint32_t;
+	static const u32 MOD = MOD_;
 	u32 v;
 
 	static u32 minv(u32 a, u32 m) {
 		a %= m;
 		assert(a);
-		return a == 1 ? 1 : u32(m - (u64)minv(m, a) * m / a);
+		return a == 1 ? 1 : m - (u64)minv(m, a) * m / a;
 	}
 
 	modnum() : v(0) {}
@@ -29,7 +30,7 @@ template <uint32_t MOD> struct modnum {
 	T& operator--() { if (v == 0) v = MOD; v--; return *this; }
 	T& operator+=(const T& o) { v += o.v; if (v >= MOD) v -= MOD; return *this; }
 	T& operator-=(const T& o) { v = v - o.v + (v < o.v ? MOD : 0); return *this; }
-	T& operator*=(const T& o) { v = u32((u64)v * o.v % MOD); return *this; }
+	T& operator*=(const T& o) { v = (u64)v * o.v % MOD; return *this; }
 	T& operator/=(const T& o) { return *this*=o.inv(); }
 
 	T operator++(signed) { modnum r(*this); ++(*this); return r; }
