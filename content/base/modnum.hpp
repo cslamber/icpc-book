@@ -1,4 +1,7 @@
-template <uint32_t MOD_> struct modnum {
+/// INCLUDE complete_operators
+
+template <uint32_t MOD_>
+struct modnum : complete_operators<modnum> {
 	using T = modnum;
 	using u64 = uint64_t;
 	using u32 = uint32_t;
@@ -31,13 +34,24 @@ template <uint32_t MOD_> struct modnum {
 	T& operator+=(const T& o) { v += o.v; if (v >= MOD) v -= MOD; return *this; }
 	T& operator-=(const T& o) { v = v - o.v + (v < o.v ? MOD : 0); return *this; }
 	T& operator*=(const T& o) { v = (u64)v * o.v % MOD; return *this; }
-	T& operator/=(const T& o) { return *this*=o.inv(); }
+	T& operator/=(const T& o) { return *this *= o.inv(); }
 
-	T operator++(signed) { modnum r(*this); ++(*this); return r; }
-	T operator--(signed) { modnum r(*this); --(*this); return r; }
-	T operator+(const T& a) const { return modnum(*this) += a; }
-	T operator-(const T& a) const { return modnum(*this) -= a; }
-	T operator*(const T& a) const { return modnum(*this) *= a; }
-	T operator/(const T& a) const { return modnum(*this) /= a; }
+	/* combo helpers */
+	static vector<T> fact_, ifact_, inv_;
+
+	static void compute_facts(int n) {
+		if (fact_.size() < ++n) { 
+			fact_.resize(n *= 2); ifact_.resize(n); inv_.resize(n);
+			fact_[0] = 1;
+			rep(i,1,n) fact_[i] = fact_[i-1] * i;
+			ifact_[n-1] = T(1) / fact_[n-1];
+			rep(i,2,n) ifact[n-i] = ifact[n-i+1] * (n-i+1);
+			rep(i,1,n) inv_[i] = ifact_[i] * fact_[i-1];
+		}
+	}
+
+	static T fact(int n) { return compute_facts(n), fact_[n]; }
+	static T ifact(int n) { return compute_facts(n), ifact_[n]; }
+	static T c(int n, int r) { return fact(n) * ifact(r) * ifact(n-r); }
 };
 

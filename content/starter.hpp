@@ -1,4 +1,4 @@
-/// INCLUDE prelude.hpp
+/// INCLUDE prelude debug
 
 void read(), solve();
 

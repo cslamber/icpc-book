@@ -1,13 +1,14 @@
 # icpc-book
 
-## 2022 rewrite progress
+The set of code I use on contests / have written and seems reusable.
+Tries to take advantage of modern C++ and should be substituted ver
+batim.  Goal is to be concise and out of the way.
 
-- [x] rewrite prelude
-- [ ] merge and simplify companion.py and preprocess.py
-- [ ] auto substitute line/file pragmas?
-- [ ] add portable .vscode
-- [ ] use python files for test storage instead of filesystem
-- [ ] refactor commonly used (segtree, point2)
-- [ ] fix lazy segtree
-- [ ] better exact geo
-- [ ] named tuples ????
+Currently rewriting and expanding.
+
+## VSCode Task Templates
+
+```json
+{
+}
+```
