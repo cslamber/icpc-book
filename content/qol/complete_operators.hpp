@@ -1,8 +1,5 @@
-tcT struct complete_operators {
-	T operator++(signed) { T r(*this); ++(*this); return r; }
+#define incdec(T) \
+	T operator++(signed) { T r(*this); ++(*this); return r; } \
 	T operator--(signed) { T r(*this); --(*this); return r; }
-	T operator+(const T& a) const { return T(*this) += a; }
-	T operator-(const T& a) const { return T(*this) -= a; }
-	T operator*(const T& a) const { return T(*this) *= a; }
-	T operator/(const T& a) const { return T(*this) /= a; }
-};
+#define binop(T,op,O) \
+	T operator op (const O& a) const { return T(*this) op = a; }

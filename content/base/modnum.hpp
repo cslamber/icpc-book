@@ -1,7 +1,7 @@
 /// INCLUDE complete_operators
 
 template <uint32_t MOD_>
-struct modnum : complete_operators<modnum> {
+struct modnum {
 	using T = modnum;
 	using u64 = uint64_t;
 	using u32 = uint32_t;
@@ -9,8 +9,7 @@ struct modnum : complete_operators<modnum> {
 	u32 v;
 
 	static u32 minv(u32 a, u32 m) {
-		a %= m;
-		assert(a);
+		a %= m; assert(a);
 		return a == 1 ? 1 : m - (u64)minv(m, a) * m / a;
 	}
 
@@ -31,10 +30,12 @@ struct modnum : complete_operators<modnum> {
 	T operator-() const { modnum r; r.v = v ? MOD-v : 0; return r; }
 	T& operator++() { v++; if (v == MOD) v = 0; return *this; }
 	T& operator--() { if (v == 0) v = MOD; v--; return *this; }
+	incdec(T)
 	T& operator+=(const T& o) { v += o.v; if (v >= MOD) v -= MOD; return *this; }
 	T& operator-=(const T& o) { v = v - o.v + (v < o.v ? MOD : 0); return *this; }
 	T& operator*=(const T& o) { v = (u64)v * o.v % MOD; return *this; }
 	T& operator/=(const T& o) { return *this *= o.inv(); }
+	binop(T,+,T) binop(T,-,T) binop(T,*,T) binop(T,/,T)
 
 	/* combo helpers */
 	static vector<T> fact_, ifact_, inv_;

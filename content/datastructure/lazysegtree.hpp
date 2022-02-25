@@ -1,18 +1,19 @@
 /// INCLUDE match_with
 
-template<class M> struct lazysegtree {
-	struct Set { typename M::T v; }
-	struct Act { typename M::A v; }
+template<class G> struct lazysegtree {
+	using T = G::T;
+	struct Set { typename G::T v; }
+	struct Act { typename G::A v; }
 	struct node {
-		typename M::T acc;
+		T acc;
 		variant<monostate, Set, Act> lazy;
+		node(T a) : acc(a) {}
 	};
-	M m; size_t n;
+	G g; size_t n;
 	vector<node> tree;
 
-	lazysegtree(M m, size_t n)
-			: m(m), n(sbit(bit_width(n)))
-			, tree(2*n, {M.e(), monostate()}) {
+	lazysegtree(G g, const vector<T>& base)
+			: g(g), n(bit_ceil(sz(base))), tree(2*n, g.e) {
 		
 	}
 };
