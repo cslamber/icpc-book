@@ -1,6 +1,6 @@
 /// INCLUDE complete_operators
 
-template<class T, size_t n>
+template<class T, uint n>
 struct smallmatrix {
 	using M = smallmatrix;
 	T a[n][n];

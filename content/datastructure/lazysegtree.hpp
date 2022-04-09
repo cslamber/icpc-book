@@ -9,7 +9,7 @@ template<class G> struct lazysegtree {
 		variant<monostate, Set, Act> lazy;
 		node(T a) : acc(a) {}
 	};
-	G g; size_t n;
+	G g; uint n;
 	vector<node> tree;
 
 	lazysegtree(G g, const vector<T>& base)

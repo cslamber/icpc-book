@@ -1,6 +1,6 @@
 /// include prelude debug
 
-void read();
+void solve();
 
 void subcases() {
 	int tests = 1;

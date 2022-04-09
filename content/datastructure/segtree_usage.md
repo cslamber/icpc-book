@@ -2,7 +2,7 @@
 struct Semigroup {
 	struct T { ... };
 	T e;
-	T op(const T& a, const T& b) const { ... }
+	T plus(const T& a, const T& b) const { ... }
 
 	/* for lazy / persisent segtrees */
 	struct A { ... };
@@ -20,6 +20,9 @@ struct Semigroup {
 		rep(i,0,times) base = op(base, base);
 		return base;
 	}
+
+	/* for fenwick */
+	T minus(const T& a, const T& b) const { ... }
 };
 ```
 

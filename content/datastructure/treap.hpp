@@ -1,25 +1,25 @@
 tcT struct treap {
 	using P = unique_ptr<treap>;
 	treap* p = nullptr; P l, r;
-	size_t s = 1, y; T val;
+	uint s = 1; ll y; T val;
 	treap(T val) : val(val), y(randint(LLONG_MIN, LLONG_MAX)) {}
 	void recalc() {
 		s = 1; p = nullptr;
 		if (l) l->p = this, s += l->s;
 		if (r) r->p = this, s += r->s;
 	}
-	size_t q() const { return l ? l->s : 0; }
-	treap* at(size_t i) {
+	uint q() const { return l ? l->s : 0; }
+	treap* at(uint i) {
 		if (i == q()) return this;
 		else if (i < q()) return l->at(i);
 		else return r->at(i-1-q());
 	}
-	pair<treap*,size_t> where(size_t o) {
+	pair<treap*,uint> where(uint o) {
 		if (!p) return {this, o};
 		else return p->where(p->r.get() == this ? o+1+p->q() : o);
 	}
 	auto where() { return where(q()); }
-	friend pair<P,P> split(P n, size_t i) {
+	friend pair<P,P> split(P n, uint i) {
 		if (!n) return {};
 		if (n->q() >= i) {
 			auto pa = split(move(n->l), i);

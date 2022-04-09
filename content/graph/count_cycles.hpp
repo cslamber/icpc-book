@@ -1,7 +1,7 @@
-vector<array<int,3>> triangles(vector<vi> G) {
-	int n = sz(G);
-	vi p(n), ip(n); iota(all(p), 0);
-	sort(all(p), [&](int i, int j){ return sz(G[i]) < sz(G[j]); });
+vector<array<int,3>> triangles(vector<vu> G) {
+	uint n = sz(G);
+	vu p(n), ip(n); iota(all(p), 0);
+	sort(all(p), cmp_by(L1(sz(G[it]))));
 	rep(i,0,n) ip[p[i]] = i;
 	vector<vi> D(n);
 	rep(i,0,n) for (int j : G[i]) if (ip[i] < ip[j]) D[ip[i]].push_back(ip[j]);
@@ -13,20 +13,20 @@ vector<array<int,3>> triangles(vector<vi> G) {
 	vector<array<int,3>> tris;
 }
 
-nat count_squares(vector<vi> G) {
-	int n = sz(G);
-	vi p(n), ip(n); iota(all(p), 0);
-	sort(all(p), [&](int i, int j){ return sz(G[i]) < sz(G[j]); });
+ull count_squares(vector<vu> G) {
+	uint n = sz(G);
+	vu p(n), ip(n); iota(all(p), 0);
+	sort(all(p), cmp_by(L1(sz(G[it]))));
 	rep(i,0,n) ip[p[i]] = i;
 	vector<vi> D(n);
 	rep(i,0,n) for (int j : G[i]) if (ip[i] < ip[j]) D[ip[i]].push_back(ip[j]);
 	rep(i,0,n) sort(all(D[i]));
-	map<pii,nat> cnts;
+	map<pii,ull> cnts;
 	rep(i,0,n) for (int j : D[i]) {
 		for (int k : D[i]) if (k > j) cnts[{j,k}]++;
 		for (int k : D[j]) if (k > i) cnts[{i,k}]++;
 	}
-	nat total = 0;
+	ull total = 0;
 	for (auto [k,v] : cnts) total += v * (v - 1) / 2;
 	return total;
 }
